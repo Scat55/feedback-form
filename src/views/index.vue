@@ -1,11 +1,7 @@
-<template>
-  <div>
-    <Typography tag-name="p">INDEX PAGE</Typography>
-  </div>
-</template>
+<script setup lang="ts"></script>
 
-<script setup lang="ts">
-import { Typography } from "@/components/Typography";
-</script>
+<template>
+  <div></div>
+</template>
 
 <style scoped lang="scss"></style>
