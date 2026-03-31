@@ -25,7 +25,7 @@ const props = withDefaults(defineProps<Props>(), {
   options: () => [],
   label: "",
   placeholder: "Текст",
-  size: "m",
+  size: "s",
   isDisabled: false,
   isLoading: false,
   isError: false,
@@ -204,9 +204,7 @@ const wrapperClass = computed(() => [
           stroke-linejoin="round"
         />
       </svg>
-      <Typography tag-name="span">
-        {{ hint }}
-      </Typography>
+      <span> {{ hint }}</span>
     </div>
   </div>
 </template>
@@ -344,10 +342,14 @@ const wrapperClass = computed(() => [
     width: 14px;
     height: 14px;
     flex-shrink: 0;
+    color: var(--danger);
   }
 
   &.--is-error {
-    color: var(--danger);
+    :deep(span) {
+      font-size: 12px;
+      color: var(--danger);
+    }
   }
 
   &.--is-loading {

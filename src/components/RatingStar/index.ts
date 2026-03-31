@@ -1,1 +1,1 @@
-export { default as RatingStart } from "./ui.vue";
+export { default as RatingStar } from "./ui.vue";

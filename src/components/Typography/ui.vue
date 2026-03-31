@@ -18,9 +18,13 @@ const props = withDefaults(defineProps<Props>(), {
 
 const { tagName, bold, size, isLink } = toRefs(props);
 
+const isHeading = computed(() =>
+  ["h1", "h2", "h3", "h4", "h5"].includes(tagName.value),
+);
+
 const classList = computed(() => [
   "typography",
-  size.value ? `size_${size.value}` : "",
+  !isHeading.value && size.value ? `size_${size.value}` : "",
   bold.value ? "bold" : "",
   `tag_${tagName.value}`,
   isLink.value ? "link" : "",

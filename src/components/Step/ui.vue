@@ -11,31 +11,21 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), {
   modelValue: 1,
 });
-
-const emit = defineEmits<{
-  "update:modelValue": [value: number];
-}>();
-
-const goTo = (index: number) => {
-  emit("update:modelValue", index + 1);
-};
 </script>
 
 <template>
   <div class="stepper">
     <div v-for="(step, index) in steps" :key="index" class="stepper__item">
       <!-- Круг -->
-      <button
-        type="button"
+      <div
         class="stepper__circle"
         :class="{
           '--is-active': index + 1 === modelValue,
           '--is-done': index + 1 < modelValue,
         }"
-        @click="goTo(index)"
       >
         {{ index + 1 }}
-      </button>
+      </div>
 
       <!-- Линия -->
       <div v-if="index < steps.length - 1" class="stepper__line">
@@ -60,6 +50,9 @@ const goTo = (index: number) => {
 }
 
 .stepper__circle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 34px;
   height: 34px;
   border-radius: 50%;
@@ -67,7 +60,6 @@ const goTo = (index: number) => {
   background-color: var(--neutral-300);
   color: var(--neutral-600);
   font-size: 16px;
-  cursor: pointer;
   flex-shrink: 0;
   transition:
     background-color 0.3s ease,
