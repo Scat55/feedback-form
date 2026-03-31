@@ -59,14 +59,14 @@ describe("Select", () => {
       expect(wrapper.find(".select").exists()).toBe(true);
     });
 
-    it("добавляет size_m по умолчанию", () => {
+    it("добавляет size_s по умолчанию", () => {
       const wrapper = mount(Select);
-      expect(wrapper.find(".select").classes()).toContain("size_m");
+      expect(wrapper.find(".select").classes()).toContain("size_s");
     });
 
-    it("добавляет size_sm если передан", () => {
-      const wrapper = mount(Select, { props: { size: "s" } });
-      expect(wrapper.find(".select").classes()).toContain("size_s");
+    it("добавляет size_m если передан", () => {
+      const wrapper = mount(Select, { props: { size: "m" } });
+      expect(wrapper.find(".select").classes()).toContain("size_m");
     });
 
     it("добавляет --is-disabled если isDisabled = true", () => {
@@ -91,8 +91,9 @@ describe("Select", () => {
 
     it("добавляет --is-open после клика", async () => {
       const wrapper = mount(Select);
-      await wrapper.find(".select").trigger("click");
-      expect(wrapper.find(".select").classes()).toContain("--is-open");
+      const select = wrapper.find(".select");
+      await select.trigger("click");
+      expect(select.classes()).toContain("--is-open");
     });
   });
 
@@ -105,8 +106,9 @@ describe("Select", () => {
 
     it("закрывается повторным кликом", async () => {
       const wrapper = mount(Select, { props: { options } });
-      await wrapper.find(".select").trigger("click");
-      await wrapper.find(".select").trigger("click");
+      const select = wrapper.find(".select");
+      await select.trigger("click");
+      await select.trigger("click");
       expect(wrapper.find(".select__dropdown").exists()).toBe(false);
     });
 
@@ -117,9 +119,7 @@ describe("Select", () => {
     });
 
     it("не открывается если isDisabled = true", async () => {
-      const wrapper = mount(Select, {
-        props: { isDisabled: true, options },
-      });
+      const wrapper = mount(Select, { props: { isDisabled: true, options } });
       await wrapper.find(".select").trigger("click");
       expect(wrapper.find(".select__dropdown").exists()).toBe(false);
     });
@@ -136,8 +136,8 @@ describe("Select", () => {
       });
       await wrapper.find(".select").trigger("click");
       const items = wrapper.findAll(".select__option");
-      expect(items[1].classes()).toContain("--is-selected");
-      expect(items[0].classes()).not.toContain("--is-selected");
+      expect(items[1]!.classes()).toContain("--is-selected");
+      expect(items[0]!.classes()).not.toContain("--is-selected");
     });
   });
 
@@ -145,29 +145,30 @@ describe("Select", () => {
     it("эмитит выбранную опцию при клике на элемент", async () => {
       const wrapper = mount(Select, { props: { options } });
       await wrapper.find(".select").trigger("click");
-      await wrapper.findAll(".select__option")[0].trigger("click");
+      await wrapper.findAll(".select__option")[0]!.trigger("click");
       expect(wrapper.emitted("update:modelValue")?.[0]).toEqual([options[0]]);
     });
 
     it("закрывает dropdown после выбора", async () => {
       const wrapper = mount(Select, { props: { options } });
       await wrapper.find(".select").trigger("click");
-      await wrapper.findAll(".select__option")[0].trigger("click");
+      await wrapper.findAll(".select__option")[0]!.trigger("click");
       expect(wrapper.find(".select__dropdown").exists()).toBe(false);
     });
 
     it("эмитит разные опции при разных кликах", async () => {
       const wrapper = mount(Select, { props: { options } });
+      const select = wrapper.find(".select");
 
-      await wrapper.find(".select").trigger("click");
-      await wrapper.findAll(".select__option")[0].trigger("click");
+      await select.trigger("click");
+      await wrapper.findAll(".select__option")[0]!.trigger("click");
 
-      await wrapper.find(".select").trigger("click");
-      await wrapper.findAll(".select__option")[2].trigger("click");
+      await select.trigger("click");
+      await wrapper.findAll(".select__option")[2]!.trigger("click");
 
-      const emitted = wrapper.emitted("update:modelValue")!;
-      expect(emitted[0]).toEqual([options[0]]);
-      expect(emitted[1]).toEqual([options[2]]);
+      const emitted = wrapper.emitted("update:modelValue");
+      expect(emitted?.[0]).toEqual([options[0]]);
+      expect(emitted?.[1]).toEqual([options[2]]);
     });
   });
 

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import StarIcon from "@/assets/icons/star.svg?component";
+import StarIcon from "../../assets/icons/star.svg";
 
 interface Props {
   modelValue?: number;

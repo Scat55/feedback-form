@@ -6,7 +6,6 @@ interface Errors {
   name: string;
   email: string;
   phone: string;
-  test: string;
 }
 
 interface Props {

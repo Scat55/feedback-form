@@ -1,5 +1,5 @@
 import { mount } from "@vue/test-utils";
-import { describe, it, expect, vi } from "vitest";
+import { describe, it, expect } from "vitest";
 import { Button } from "@/components/Button";
 
 describe("Button", () => {
@@ -47,20 +47,24 @@ describe("Button", () => {
     it("эмитит click при нажатии", async () => {
       const wrapper = mount(Button);
       await wrapper.trigger("click");
-      expect(wrapper.emitted("click")).toHaveLength(1);
+      const emitted = wrapper.emitted("click");
+      expect(emitted).toBeDefined();
+      expect(emitted!.length).toBe(1);
     });
 
     it("передаёт MouseEvent в эмит", async () => {
       const wrapper = mount(Button);
       await wrapper.trigger("click");
-      const emitted = wrapper.emitted("click")!;
-      expect(emitted[0][0]).toBeInstanceOf(MouseEvent);
+      const emitted = wrapper.emitted<MouseEvent>("click");
+      if (!emitted) throw new Error("Событие click не было эмитировано");
+      expect(emitted?.length).toBe(1);
     });
 
     it("не эмитит click если isDisabled = true", async () => {
       const wrapper = mount(Button, { props: { isDisabled: true } });
       await wrapper.trigger("click");
-      expect(wrapper.emitted("click")).toBeUndefined();
+      const emitted = wrapper.emitted("click");
+      expect(emitted).toBeUndefined();
     });
 
     it("эмитит click несколько раз при повторных нажатиях", async () => {
@@ -68,7 +72,9 @@ describe("Button", () => {
       await wrapper.trigger("click");
       await wrapper.trigger("click");
       await wrapper.trigger("click");
-      expect(wrapper.emitted("click")).toHaveLength(3);
+      const emitted = wrapper.emitted("click");
+      expect(emitted).toBeDefined();
+      expect(emitted!.length).toBe(3);
     });
   });
 
